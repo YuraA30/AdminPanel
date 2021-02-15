@@ -14,7 +14,7 @@ router.get("/:id", (req, res) => {
     (err, result) => {
       if(err){ console.log(err)
       } else {
-      res.json(result);
+      res.redirect(req.header('Referer'))
       }
     }
       );

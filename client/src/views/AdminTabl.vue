@@ -26,6 +26,7 @@
     <br />
     <table class="table table-striped">
       <thead>
+        <th scope="col">id</th>
         <th scope="col">Назва</th>
         <th scope="col">Бренд</th>
         <th scope="col">Опис</th>
@@ -36,6 +37,10 @@
       </thead>
       <tbody>
         <tr v-for="product in filterList" :key="product.id">
+           <td>
+            {{ product.id }}
+          </td>
+
           <td>
             {{ product.name }}
           </td>
@@ -66,12 +71,12 @@
             {{ product.count }}
           </td>
           <td>
-            <router-link :to="'/api/admin/delete/' + product.id">
-              <button method="GET" type="submit" class="btn btn-danger">
+            <a :href="'/api/admin/delete/' + product.id">
+              <button type="button" class="btn btn-danger">
                 Видалити
                 <i class="far fa-trash-alt"></i>
               </button>
-            </router-link>
+            </a>
           </td>
         </tr>
       </tbody>

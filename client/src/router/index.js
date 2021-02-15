@@ -119,10 +119,9 @@ const routes = [
   {
   path:'/admin/delete/:id',
   name: 'AdminDelProd',
-  component: () => {return import ('../views/AdminDelProd.vue')}
+  component: AdminTabl
 }
 ]
-  
 
 const router = new VueRouter({
   mode: "history",
