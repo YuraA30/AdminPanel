@@ -1,7 +1,27 @@
 <template>
   <div>
     <br />
-    <input type="form-control" v-model="search" placeholder="Пошук" autofocus />
+    <form>
+      <div class="form-group">
+        <button
+          type="button"
+          class="btn btn-info"
+          @click="$router.push({ name: 'Adminadditem' })"
+          style="float: right"
+        >
+          Додати товар
+          <i class="fas fa-plus-circle"></i>
+        </button>
+
+        <input
+          type="form-control"
+          v-model="search"
+          placeholder="Пошук"
+          autofocus
+          style="float: right"
+        />
+      </div>
+    </form>
     <br />
     <br />
     <table class="table table-striped">
@@ -47,7 +67,7 @@
           </td>
           <td>
             <router-link :to="'/api/admin/delete/' + product.id">
-              <button method = "GET" type="submit" class="btn btn-danger">
+              <button method="GET" type="submit" class="btn btn-danger">
                 Видалити
                 <i class="far fa-trash-alt"></i>
               </button>

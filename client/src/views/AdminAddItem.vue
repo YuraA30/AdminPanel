@@ -1,3 +1,4 @@
+  
 <template>
   <div class="container mt-4">
     <div class="col-sm-4 mx-auto">
@@ -31,7 +32,7 @@
           <br />
           <div>
             <div class="card" style="width: 19rem">
-              <img class="card-img-top" :src="avatar" alt="Зображення" />
+              <img class="card-img-top" :src="formReg.image" alt="Зображення" />
               <div class="card-body">
                 <p class="card-text"></p>
               </div>
