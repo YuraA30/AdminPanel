@@ -36,7 +36,7 @@ router.get("/:cat", (req, res) => {
   console.log(req.originalUrl)
 if(req.baseUrl == "/api/admin/categories"){
   db.query(
-    `SELECT * FROM products WHERE subcategory_id = ${req.params.cat}`,
+    `SELECT * FROM products WHERE subcategory_id = ${req.params.cat} ORDER BY id DESC`,
     (err, result) => {
       res.json(result);
     }
@@ -54,7 +54,7 @@ if(req.baseUrl == "/api/admin/categories"){
 
 router.get("/:cat/:subcat", (req, res) => {
   db.query(
-    `SELECT * FROM products WHERE subcategory_id = ${req.params.subcat}`,
+    `SELECT * FROM products WHERE subcategory_id = ${req.params.subcat}  ORDER BY id DESC`,
     (err, result) => {
       res.json(result);
     }

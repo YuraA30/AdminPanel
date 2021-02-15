@@ -3,7 +3,7 @@
   <div class="container mt-4">
     <div class="col-sm-4 mx-auto">
       <h2 class="reg-title">Додати товар</h2>
-      <form @submit.prevent="userRegister" novalidate>
+      <form method="POST" action="/api/admin/additem" novalidate>
         <div v-if="regMessage" class="alert alert-success" role="alert">
           Ви успішно додали товар!
         </div>
@@ -50,6 +50,7 @@
             type="text"
             class="form-control"
             id="name"
+            name="name"
           />
 
           <div class="invalid-feedback" v-if="!$v.formReg.name.required">
@@ -67,6 +68,7 @@
             type="text"
             class="form-control"
             id="brand"
+            name = "brand"
           />
 
           <div class="invalid-feedback" v-if="!$v.formReg.brand.required">
@@ -84,6 +86,7 @@
             type="text"
             class="form-control"
             id="desc"
+            name = "description"
           />
 
           <div class="invalid-feedback" v-if="!$v.formReg.desc.required">
@@ -101,6 +104,7 @@
             type="text"
             class="form-control"
             id="surname"
+            name = "price"
           />
 
           <div class="invalid-feedback" v-if="!$v.formReg.surname.required">
@@ -121,6 +125,7 @@
             type="text"
             class="form-control"
             id="count"
+            name="count"
           />
 
           <div class="invalid-feedback" v-if="!$v.formReg.count.required">
@@ -134,7 +139,7 @@
         <button
           type="button"
           class="btn btn-light mr-2"
-          @click="$router.push({ name: 'table' })"
+          @click="$router.push({ name: 'AdminTabl' })"
         >
           Назад
         </button>
@@ -143,7 +148,6 @@
           :disabled="disabledBtn"
           type="submit"
           class="btn btn-primary"
-          @click="$router.push({ name: 'table' })"
         >
           Додати
         </button>

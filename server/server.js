@@ -18,6 +18,7 @@ app.use("/api/forgetPassword", require("./routes/forgetPassword"));
 app.use("/api/resetPassword", require("./routes/resetPassword"));
 app.use("/api/admin/categories", require("./routes/categories"));
 app.use("/api/admin/delete", require("./routes/products"));
+app.use("/api/admin/additem", require("./routes/addItem"));
 // SPA
 app.get("*", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
