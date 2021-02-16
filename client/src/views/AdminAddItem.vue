@@ -3,7 +3,11 @@
   <div class="container mt-4">
     <div class="col-sm-4 mx-auto">
       <h2 class="reg-title">Додати товар</h2>
-      <form method="POST" :action="'/api/admin/additem/' + $route.params.cat" novalidate>
+      <form
+        method="POST"
+        :action="'/api/admin/additem/' + $route.params.cat"
+        novalidate
+      >
         <div v-if="regMessage" class="alert alert-success" role="alert">
           Ви успішно додали товар!
         </div>
@@ -68,7 +72,7 @@
             type="text"
             class="form-control"
             id="brand"
-            name = "brand"
+            name="brand"
           />
 
           <div class="invalid-feedback" v-if="!$v.formReg.brand.required">
@@ -86,7 +90,7 @@
             type="text"
             class="form-control"
             id="desc"
-            name = "description"
+            name="description"
           />
 
           <div class="invalid-feedback" v-if="!$v.formReg.desc.required">
@@ -104,7 +108,7 @@
             type="text"
             class="form-control"
             id="surname"
-            name = "price"
+            name="price"
           />
 
           <div class="invalid-feedback" v-if="!$v.formReg.surname.required">
@@ -136,6 +140,14 @@
           </div>
         </div>
 
+        <div v-for="spec in specs" :key="spec.id">
+          <div class="form-group">
+            <label>{{ spec.name }}</label>
+
+            <input type="text" class="form-control" />
+          </div>
+        </div>
+
         <button
           type="button"
           class="btn btn-light mr-2"
@@ -144,11 +156,7 @@
           Назад
         </button>
 
-        <button
-          :disabled="disabledBtn"
-          type="submit"
-          class="btn btn-primary"
-        >
+        <button :disabled="disabledBtn" type="submit" class="btn btn-primary">
           Додати
         </button>
       </form>
@@ -160,7 +168,7 @@
 import { required, helpers, url } from "vuelidate/lib/validators";
 
 const alpha = helpers.regex("alpha", /^[0-9]*$/);
-
+import axios from "axios";
 export default {
   data() {
     return {
@@ -174,7 +182,19 @@ export default {
         image: "",
       },
       avatar: null,
+      specs: [],
     };
+  },
+
+  async created() {
+    try {
+      const res = await axios.get(
+        "/api/admin/categories/additem/" + this.$route.params.cat
+      );
+      this.specs = res.data;
+    } catch (e) {
+      console.error(e);
+    }
   },
 
   computed: {
