@@ -16,13 +16,12 @@
           <div class="form-group">
             <h2 class="mt-4 text-left">{{ i.name }}</h2>
             <div class="d-flex justify-content-end">
-              <button
-                type="button"
-                class="btn btn-info"
-                @click="$router.push({ name: 'Adminaddsubcategory' })"
-              >
-                Додати підкатегорію
-              </button>
+              <a :href="'/admin/addsubcategory'">
+                <button type="button" class="btn btn-info">
+                  Додати підкатегорію
+                  <i class="far fa-trash-alt"></i>
+                </button>
+             </a>
             </div>
           </div>
         </div>

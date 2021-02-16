@@ -2,7 +2,7 @@
   <div class="container mt-4">
     <div class="col-sm-4 mx-auto">
       <h2 class="reg-title">Додати підкатегорію</h2>
-      <form @submit.prevent="userRegister" novalidate>
+      <form method="POST" action="/api/admin/addsubcategory" novalidate> <!-- @submit.prevent="userRegister" -->
         <div v-if="regMessage" class="alert alert-success" role="alert">
           Ви успішно додали підкатегорію!
         </div>
@@ -47,6 +47,7 @@
             v-model.trim="formReg.nameCat"
             class="form-control"
             id="nameCat"
+            name="parent"
           >
             <option selected></option>
             <option value="1">One</option>
@@ -68,6 +69,7 @@
             type="text"
             class="form-control"
             id="name"
+            name="name"
           />
 
           <div class="invalid-feedback" v-if="!$v.formReg.name.required">
@@ -86,8 +88,7 @@
           :disabled="disabledBtn"
           type="submit"
           class="btn btn-primary"
-          @click="$router.push({ name: 'Admincategory' })"
-        >
+        >  <!-- @click="$router.push({ name: 'Admincategory' })" -->
           Додати
         </button>
       </form>
