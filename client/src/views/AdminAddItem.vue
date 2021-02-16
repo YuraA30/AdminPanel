@@ -3,7 +3,7 @@
   <div class="container mt-4">
     <div class="col-sm-4 mx-auto">
       <h2 class="reg-title">Додати товар</h2>
-      <form method="POST" action="/api/admin/additem" novalidate>
+      <form method="POST" :action="'/api/admin/additem/' + $route.params.cat" novalidate>
         <div v-if="regMessage" class="alert alert-success" role="alert">
           Ви успішно додали товар!
         </div>

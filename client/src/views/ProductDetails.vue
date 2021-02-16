@@ -5,7 +5,7 @@
         <div class="col col-lg-8 col-12">
           <h4 class="my-4">{{ product.name }}</h4>
           <!-- <h5 class="text-left">{{ product.brand }}</h5> -->
-          <img :src="product.img" class="image" />
+          <img :src="product.img" class="image img-prod" />
         </div>
         <div class="col col-lg-4 col-12 mt-5">
           <h3 class="mt-5 ml-2">{{ product.price }} грн</h3>
@@ -33,16 +33,10 @@
         <div class="col col-lg-8 col-12">
           <h4 class="text-center my-4">Характеристики</h4>
           <table class="table">
-            <tbody>
-              <tr>
-                <td class="key">Процесор</td>
-                <td class="value">Мощний</td>
-              </tr>
-              <tr>
-                <td class="key">Відеокарта</td>
-                <td class="value">Крута</td>
-              </tr>
-            </tbody>
+            <tr v-for="spec of product.specs" :key="spec.id">
+              <td class="key">{{ spec.name }}</td>
+              <td class="value">{{ spec.value }}</td>
+            </tr>
           </table>
         </div>
       </div>
@@ -63,7 +57,7 @@ export default {
       const res = await axios.get(
         "/api/products/" + this.$route.params.product_id
       );
-      this.product = res.data[0];
+      this.product = res.data;
     } catch (e) {
       console.error(e);
     }
@@ -74,6 +68,11 @@ export default {
 <style scoped>
 .details {
   min-height: 100vh;
+}
+
+.img-prod {
+  object-fit: contain;
+  max-height: 60vh;
 }
 
 .button {

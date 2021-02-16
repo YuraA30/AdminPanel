@@ -14,14 +14,14 @@ router.post("/", async (req, res) => {
     `SELECT * FROM users WHERE email like '${req.body.email}' LIMIT 1`,
     async (err, results) => {
       const json = JSON.parse(JSON.stringify(results));
-      console.log(json);
+      //console.log(json);
       if (json.length > 0) {
-        console.log(
+        /*console.log(
           "password:",
           req.body.password,
           "from DB: ",
           json[0].password
-        );
+        );*/
         bcrypt.compare(req.body.password, json[0].password, (err, result) => {
           if (result) {
             const token = jwt.sign(
@@ -32,8 +32,14 @@ router.post("/", async (req, res) => {
               process.env.SECRET,
               { expiresIn: "30d" }
             );
-            res.status(200).json({
-              token: `${token}`,
+            console.log(json[0].id, token)
+            db.query(`UPDATE users SET token = '${token}' WHERE id = ${json[0].id}`, (err, result) => {
+              if(err){
+                console.log(err)
+              }
+              res.status(200).json({
+                  token: `${token}`,
+              });
             });
           } else {
             res.status(401).json({

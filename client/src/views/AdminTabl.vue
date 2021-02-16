@@ -13,14 +13,14 @@
             autofocus
           />
 
-          <button
-            type="button"
-            class="btn btn-info"
-            @click="$router.push({ name: 'Adminadditem' })"
-          >
-            Додати товар
-            <i class="fas fa-plus-circle"></i>
-          </button>
+          <a
+              :href="'/api/admin/categories/additem/' + this.$route.params.cat"
+            >
+              <button type="button" class="btn btn-info">
+                Додати товар
+                <i class="far fa-trash-alt"></i>
+              </button>
+          </a>
         </div>
       </div>
     </form>
