@@ -14,7 +14,7 @@
           />
 
           <a
-              :href="'/api/admin/categories/additem/' + this.$route.params.cat"
+              :href="'/admin/categories/additem/' + this.$route.params.cat"
             >
               <button type="button" class="btn btn-info">
                 Додати товар
