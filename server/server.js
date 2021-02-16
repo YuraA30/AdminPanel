@@ -17,6 +17,7 @@ app.use("/api/registration", require("./routes/registration"));
 app.use("/api/forgetPassword", require("./routes/forgetPassword"));
 app.use("/api/resetPassword", require("./routes/resetPassword"));
 app.use("/api/admin/categories", require("./routes/categories"));
+app.use("/api/admin/additem", require("./routes/additem"));
 app.use("/api/admin/delete", require("./routes/products"));
 app.use("/api/admin/edit", require("./routes/edit"));
 app.use("/api/admin/addcategory", require("./routes/addcategory"));

@@ -52,38 +52,6 @@ if(req.baseUrl == "/api/admin/categories"){
 //res.send(req.originalUrl)
 });
 
-router.get("/additem/:cat",async(req,res) => {
-if(req.baseUrl == "/api/admin/categories"){
-  db.query(
-    `SELECT DISTINCT name FROM specs WHERE subcategory_id = ${req.params.cat}`,
-    (err, result) => {
-      console.log(result);
-      res.json(result);
-    }
-  );
-}
-});
-
-router.post("/additem/:cat", async (req, res) => {
-  if(req.baseUrl == "/api/admin/categories"){
-  json = JSON.parse(JSON.stringify(req.body));
-  let product = {
-    subcategory_id : req.params.cat,
-    name: json.name,
-    brand: json.brand,
-    description: json.description,
-    img: json.image,
-    price: json.price,
-    count: json.count,
-  };
-  let sql = "INSERT INTO products set ?";
-  db.query(sql, product, (err, result) => {
-    if (err) throw err;
-    res.redirect(req.header('Referer'))
-  });
-}
-});
-
 router.get("/:cat/:subcat", (req, res) => {
   db.query(
     `SELECT * FROM products WHERE subcategory_id = ${req.params.subcat}  ORDER BY id DESC`,

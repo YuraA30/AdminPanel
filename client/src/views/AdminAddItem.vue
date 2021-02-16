@@ -5,7 +5,7 @@
       <h2 class="reg-title">Додати товар</h2>
       <form
         method="POST"
-        :action="'/api/admin/categories/additem/' + $route.params.cat"
+        :action="'/api/admin/additem/' + $route.params.cat"
         novalidate
       >
         <div v-if="regMessage" class="alert alert-success" role="alert">
@@ -144,7 +144,7 @@
           <div class="form-group">
             <label>{{ spec.name }}</label>
 
-            <input type="text" class="form-control"/>
+            <input type="text" class="form-control" />
           </div>
         </div>
 
@@ -189,7 +189,7 @@ export default {
   async created() {
     try {
       const res = await axios.get(
-        "/api/admin/categories/additem/" + this.$route.params.cat
+        "/api/admin/additem/" + this.$route.params.cat
       );
       this.specs = res.data;
     } catch (e) {

@@ -93,7 +93,7 @@ const routes = [
     component: AdminTabl
   },
   {
-    path: '/admin/categories/additem/:cat',
+    path: '/admin/additem/:cat',
     name: 'Adminadditem',
     component: () => { return import ('../views/AdminAddItem.vue') }
   },
