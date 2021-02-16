@@ -11,6 +11,7 @@ import Subcategories from "../views/Subcategories";
 import ForgetPassword from '../views/ForgetPassword.vue'
 import ResetPassword from '../views/ResetPassword.vue'
 import AdminTabl from '../views/AdminTabl.vue'
+import AdminEditItem from '../views/AdminEditItem.vue'
 
 Vue.use(VueRouter);
 
@@ -110,6 +111,11 @@ const routes = [
   path:'/admin/delete/:product_id',
   name: 'AdminDelProd',
   component: AdminTabl
+},
+  {
+  path:'/admin/edit/:product_id',
+  name: 'AdminEditProd',
+  component: AdminEditItem
 },
 {
 path:'/admin/soldItems',

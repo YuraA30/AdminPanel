@@ -67,7 +67,7 @@ if(req.baseUrl == "/api/admin/categories"){
 router.post("/additem/:cat", async (req, res) => {
   if(req.baseUrl == "/api/admin/categories"){
   json = JSON.parse(JSON.stringify(req.body));
-  let user = {
+  let product = {
     subcategory_id : req.params.cat,
     name: json.name,
     brand: json.brand,
@@ -77,7 +77,7 @@ router.post("/additem/:cat", async (req, res) => {
     count: json.count,
   };
   let sql = "INSERT INTO products set ?";
-  db.query(sql, user, (err, result) => {
+  db.query(sql, product, (err, result) => {
     if (err) throw err;
     res.redirect(req.header('Referer'))
   });

@@ -9,7 +9,7 @@
           @click="$router.push({ name: 'Adminaddcategory' })"
         >
           Додати категорію
-          <i class="far fa-plus-circle"></i>
+         <!--  <i class="far fa-plus-circle"></i> -->
         </button>
       </div>
       <div v-for="i in category" v-bind:key="i">
@@ -20,7 +20,7 @@
               <a :href="'/admin/addsubcategory/'+ i.id">
                 <button type="button" class="btn btn-info">
                   Додати підкатегорію
-                  <i class="far fa-plus-circle"></i>
+                  <!-- <i class="far fa-plus-circle"></i> -->
                 </button>
              </a>
             </div>

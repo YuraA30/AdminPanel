@@ -86,7 +86,7 @@
           </td>
 
           <td>
-            <a :href="'/' + product.id">
+            <a :href="'/admin/edit/' + product.id">
               <button type="button" class="btn btn-info">
                 Редагувати
                 <i class="far fa-edit"></i>

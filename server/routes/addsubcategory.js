@@ -2,16 +2,6 @@ const { Router } = require("express");
 const router = Router();
 const db = require("../config/db");
 
-router.get("/:cat",(req,res) =>{
-  db.query(
-    `SELECT * FROM categories WHERE level = 0`,
-    (err, result) => {
-      res.json(result);
-      console.log(result);
-    }
-  );
-})
-
 router.post("/:cat", (req, res) => {
   json = JSON.parse(JSON.stringify(req.body));
   let category = {

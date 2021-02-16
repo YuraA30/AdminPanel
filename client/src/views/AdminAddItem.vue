@@ -144,7 +144,7 @@
           <div class="form-group">
             <label>{{ spec.name }}</label>
 
-            <input type="text" class="form-control" />
+            <input type="text" class="form-control"/>
           </div>
         </div>
 
