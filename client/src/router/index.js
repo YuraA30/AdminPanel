@@ -102,17 +102,7 @@ const routes = [
     component: () => {return import ('../views/AdminAddCategory.vue')}
   },
   {
-    path: '/admin/addsubcategory',
-    name: 'Adminaddsubcategory',
-    component: () => {return import ('../views/AdminAddSubCategory.vue')}
-  },
-  {
-    path: '/admin/addsubcategory',
-    name: 'Adminaddsubcategory',
-    component: () => {return import ('../views/AdminAddSubCategory.vue')}
-  },
-  {
-    path: '/admin/addsubcategory',            
+    path: '/admin/addsubcategory/:cat',            
     name: 'Adminaddsubcategory',
     component: () => {return import ('../views/AdminAddSubCategory.vue')}
   },

@@ -2,7 +2,8 @@
   <div class="container mt-4">
     <div class="col-sm-4 mx-auto">
       <h2 class="reg-title">Додати підкатегорію</h2>
-      <form method="POST" action="/api/admin/addsubcategory" novalidate> <!-- @submit.prevent="userRegister" -->
+      <form method="POST" :action="'/api/admin/addsubcategory/' +  this.$route.params.cat" novalidate> 
+        <!-- @submit.prevent="userRegister" -->
         <div v-if="regMessage" class="alert alert-success" role="alert">
           Ви успішно додали підкатегорію!
         </div>
@@ -35,27 +36,6 @@
                 <p class="card-text"></p>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="nameCat">Назва категорії</label>
-
-          <select
-            @blur="$v.formReg.nameCat.$touch()"
-            :class="status($v.formReg.nameCat)"
-            v-model.trim="formReg.nameCat"
-            class="form-control"
-            id="nameCat"
-            name="parent"
-          >
-            <option selected></option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-          <div class="invalid-feedback" v-if="!$v.formReg.nameCat.required">
-            {{ reqText }}
           </div>
         </div>
 
@@ -119,7 +99,6 @@ export default {
     disabledBtn() {
       return (
         this.$v.formReg.image.$invalid ||
-        this.$v.formReg.nameCat.$invalid ||
         this.$v.formReg.name.$invalid
       );
     },

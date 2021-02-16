@@ -9,6 +9,7 @@
           @click="$router.push({ name: 'Adminaddcategory' })"
         >
           Додати категорію
+          <i class="far fa-plus-circle"></i>
         </button>
       </div>
       <div v-for="i in category" v-bind:key="i">
@@ -16,10 +17,10 @@
           <div class="form-group">
             <h2 class="mt-4 text-left">{{ i.name }}</h2>
             <div class="d-flex justify-content-end">
-              <a :href="'/admin/addsubcategory'">
+              <a :href="'/admin/addsubcategory/'+ i.id">
                 <button type="button" class="btn btn-info">
                   Додати підкатегорію
-                  <i class="far fa-trash-alt"></i>
+                  <i class="far fa-plus-circle"></i>
                 </button>
              </a>
             </div>

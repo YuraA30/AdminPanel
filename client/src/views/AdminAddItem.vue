@@ -5,7 +5,7 @@
       <h2 class="reg-title">Додати товар</h2>
       <form
         method="POST"
-        :action="'/api/admin/additem/' + $route.params.cat"
+        :action="'/api/admin/categories/additem/' + $route.params.cat"
         novalidate
       >
         <div v-if="regMessage" class="alert alert-success" role="alert">
