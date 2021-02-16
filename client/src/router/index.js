@@ -92,7 +92,7 @@ const routes = [
     component: AdminTabl
   },
   {
-    path: '/admin/additem',
+    path: '/admin/categories/:cat/additem',
     name: 'Adminadditem',
     component: () => { return import ('../views/AdminAddItem.vue') }
   },
@@ -120,6 +120,11 @@ const routes = [
   path:'/admin/delete/:id',
   name: 'AdminDelProd',
   component: AdminTabl
+},
+{
+path:'/admin/soldItems',
+name: 'Adminsolditems',
+component: () => {return import ('../views/AdminSoldItems.vue')}
 }
 ]
 

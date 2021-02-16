@@ -1,25 +1,60 @@
 <template>
   <div class="container mt-4">
     <div class="col-sm-4 mx-auto">
-      <h2 class="reg-title">Додати товар</h2>
+      <h2 class="reg-title">Додати підкатегорію</h2>
       <form @submit.prevent="userRegister" novalidate>
         <div v-if="regMessage" class="alert alert-success" role="alert">
           Ви успішно додали підкатегорію!
         </div>
-        <form class="md-form">
-          <div class="file-field">
-            <div class="btn btn-primary btn-sm float-left">
-              <span>Виберіть фотографію</span>
-              <input type="file" name="image" @change="GetImage" />
+        <div class="form-group">
+          <label for="image">Фотографія</label>
+
+          <input
+            @blur="$v.formReg.image.$touch()"
+            :class="status($v.formReg.image)"
+            v-model.trim="formReg.image"
+            type="text"
+            class="form-control"
+            id="image"
+            name="image"
+            @change="GetImage"
+          />
+
+          <div class="invalid-feedback" v-if="!$v.formReg.image.required">
+            {{ reqText }}
+          </div>
+
+          <div class="invalid-feedback" v-if="!$v.formReg.image.url">
+            {{ reqUrl }}
+          </div>
+          <br />
+          <div>
+            <div class="card" style="width: 19rem">
+              <img class="card-img-top" :src="formReg.image" alt="Зображення" />
+              <div class="card-body">
+                <p class="card-text"></p>
+              </div>
             </div>
           </div>
-        </form>
-        <div>
-          <div class="card" style="width: 20rem">
-            <img class="card-img-top" :src="avatar" alt="Image" />
-            <div class="card-body">
-              <p class="card-text"></p>
-            </div>
+        </div>
+
+        <div class="form-group">
+          <label for="nameCat">Назва категорії</label>
+
+          <select
+            @blur="$v.formReg.nameCat.$touch()"
+            :class="status($v.formReg.nameCat)"
+            v-model.trim="formReg.nameCat"
+            class="form-control"
+            id="nameCat"
+          >
+            <option selected></option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+          <div class="invalid-feedback" v-if="!$v.formReg.nameCat.required">
+            {{ reqText }}
           </div>
         </div>
 
@@ -43,7 +78,7 @@
         <button
           type="button"
           class="btn btn-light mr-2"
-          @click="$router.push({ name: 'category' })"
+          @click="$router.push({ name: 'Admincategory' })"
         >
           Назад
         </button>
@@ -51,7 +86,7 @@
           :disabled="disabledBtn"
           type="submit"
           class="btn btn-primary"
-          @click="$router.push({ name: 'category' })"
+          @click="$router.push({ name: 'Admincategory' })"
         >
           Додати
         </button>
@@ -61,7 +96,7 @@
 </template>
 
 <script>
-import { required } from "vuelidate/lib/validators";
+import { required, url } from "vuelidate/lib/validators";
 
 //const alpha = helpers.regex("alpha", /^[a-zA-Zа-яёА-А-ЯҐЄІЇ-яґєії]*$/);
 
@@ -70,6 +105,7 @@ export default {
     return {
       regMessage: false,
       reqText: "Поле обовязкове для заповнення",
+      reqUrl: "Потрібна силка",
 
       formReg: {
         name: "",
@@ -80,7 +116,11 @@ export default {
 
   computed: {
     disabledBtn() {
-      return this.$v.formReg.name.$invalid;
+      return (
+        this.$v.formReg.image.$invalid ||
+        this.$v.formReg.nameCat.$invalid ||
+        this.$v.formReg.name.$invalid
+      );
     },
   },
 
@@ -116,6 +156,13 @@ export default {
       name: {
         required,
         //        alpha,
+      },
+      image: {
+        required,
+        url,
+      },
+      nameCat: {
+        required,
       },
     },
   },

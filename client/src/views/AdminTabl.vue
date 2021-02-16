@@ -3,23 +3,25 @@
     <br />
     <form>
       <div class="form-group">
-        <button
-          type="button"
-          class="btn btn-info"
-          @click="$router.push({ name: 'Adminadditem' })"
-          style="float: right"
-        >
-          Додати товар
-          <i class="fas fa-plus-circle"></i>
-        </button>
+        <div class="d-flex justify-content-end">
+          <input
+            type="form-control"
+            v-model="search"
+            placeholder="Пошук"
+            height="35"
+            width="200"
+            autofocus
+          />
 
-        <input
-          type="form-control"
-          v-model="search"
-          placeholder="Пошук"
-          autofocus
-          style="float: right"
-        />
+          <button
+            type="button"
+            class="btn btn-info"
+            @click="$router.push({ name: 'Adminadditem' })"
+          >
+            Додати товар
+            <i class="fas fa-plus-circle"></i>
+          </button>
+        </div>
       </div>
     </form>
     <br />
@@ -37,7 +39,7 @@
       </thead>
       <tbody>
         <tr v-for="product in filterList" :key="product.id">
-           <td>
+          <td>
             {{ product.id }}
           </td>
 
@@ -60,6 +62,7 @@
               alt="img"
               width="75"
               height="100"
+              style="object-fit: contain"
             />
           </td>
 
@@ -71,10 +74,22 @@
             {{ product.count }}
           </td>
           <td>
-            <a :href="'/api/admin/delete/' + product.id">
+            <a
+              :href="'/api/admin/delete/' + product.id"
+              onclick="return confirm('Ти реальано хочеш видалити?');"
+            >
               <button type="button" class="btn btn-danger">
                 Видалити
                 <i class="far fa-trash-alt"></i>
+              </button>
+            </a>
+          </td>
+
+          <td>
+            <a :href="'/' + product.id">
+              <button type="button" class="btn btn-info">
+                Редагувати
+                <i class="far fa-edit"></i>
               </button>
             </a>
           </td>

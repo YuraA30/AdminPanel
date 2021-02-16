@@ -18,6 +18,7 @@ router.post("/", async (req, res) => {
   let sql = "INSERT INTO products set ?";
   db.query(sql, user, (err, result) => {
     if (err) throw err;
+    res.redirect(req.header('Referer'))
   });
 });
 
