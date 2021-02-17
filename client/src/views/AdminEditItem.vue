@@ -3,7 +3,7 @@
   <div class="container mt-4">
     <div class="col-sm-4 mx-auto">
       <h2 class="reg-title">Редагувати товар товар</h2>
-      <form method="POST" action="/api/admin/additem" novalidate>
+      <form method="POST" :action="'/api/admin/edit/'+  this.$route.params.product_id" novalidate>
         <div v-if="regMessage" class="alert alert-success" role="alert">
           Ви успішно додали товар!
         </div>
@@ -128,13 +128,23 @@
             name="count"
           />
 
+
           <div class="invalid-feedback" v-if="!$v.formReg.count.required">
             {{ reqText }}
           </div>
           <div class="invalid-feedback" v-if="!$v.formReg.count.alpha">
             {{ alphaText }}
           </div>
+        </div>   
+
+        <div v-for="spec in specs" :key="spec.id">
+          <div class="form-group">
+            <label>{{products.specs}}</label>
+
+            <input type="text" class="form-control" :name="'spec_' + products.id" />
+          </div>
         </div>
+
 
         <button
           type="button"
@@ -171,6 +181,17 @@ export default {
       },
       avatar: null,
     };
+  },
+
+   async created() {
+    try {
+      const res = await axios.get(
+        "/api/admin/edit/" + this.$route.params.product_id
+      );
+      this.products = res.data;
+    } catch (e) {
+      console.error(e);
+    }
   },
 
   computed: {
