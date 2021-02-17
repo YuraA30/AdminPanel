@@ -11,7 +11,10 @@
           width="200"
           autofocus
         />
-        <a :href="'/admin/specs/add/'+  $route.params.product_id" class="btn btn-info">
+        <a
+          :href="'/admin/specs/add/' + $route.params.product_id"
+          class="btn btn-info"
+        >
           Додати характеристику
           <i class="far fa-trash-alt"></i>
         </a>
@@ -28,10 +31,9 @@
         <th scope="col">Редагування</th>
       </thead>
       <tbody>
-        <tr v-for="spec in specs" :key="spec.id">
-          
+        <tr v-for="spec in filterList" :key="spec.id">
           <td>
-            {{ spec.id}}
+            {{ spec.id }}
           </td>
 
           <td>
@@ -54,11 +56,8 @@
           </td>
 
           <td>
-            <a
-              :href="'/admin/specs/edit/' + spec.id"
-              class="btn btn-info"
-            >
-            Змінити
+            <a :href="'/admin/specs/edit/' + spec.id" class="btn btn-info">
+              Змінити
               <i class="far fa-trash-alt"></i>
             </a>
           </td>
@@ -84,8 +83,6 @@ export default {
     };
   },
 
-  
-
   async created() {
     try {
       const res = await axios.get(
@@ -97,16 +94,17 @@ export default {
     }
   },
 
-computed: {
+  computed: {
     filterList() {
       return this.specs.filter((post) => {
         return (
           post.name.toLowerCase().includes(this.search.toLowerCase()) ||
-          post.value.toLowerCase().includes(this.search.toLowerCase()) 
+          post.value.toLowerCase().includes(this.search.toLowerCase())
         );
       });
     },
   },
+};
 </script>
 
 <style>
