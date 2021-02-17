@@ -8,17 +8,44 @@ router.get("/", (req, res) => {
   });
 });
 
-router.get("/:id", (req, res) => {
-  db.query(
-    `DELETE FROM products WHERE id = ${req.params.id}`,
-    (err, result) => {
-      if(err){ console.log(err)
-      } else {
-      res.redirect(req.header('Referer'))
+router.get("/:product_id", (req, res) => {
+  if (req.baseUrl == "/api/admin/delete") {
+    db.query(
+      `DELETE FROM products WHERE id = ${req.params.product_id}`,
+      (err, result) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.redirect(req.header("Referer"));
+        }
       }
-    }
-      );
-    }
-  )
+    );
+  } else {
+    arr = {};
+    db.query(
+      `SELECT * FROM products WHERE id = ${req.params.product_id}`,
+      (err, result) => {
+        arr = result[0];
+
+        db.query(
+          `SELECT * FROM specs WHERE product_id = ${result[0].id}`,
+          (err, result) => {
+            arr.specs = result;
+
+            res.json(arr);
+          }
+        );
+      }
+    );
+  }
+
+  // db.query(
+  //   `SELECT products.*, products.name name, GROUP_CONCAT(specs.name) spec_name, GROUP_CONCAT(specs.value) spec_value FROM products INNER JOIN specs ON specs.product_id = products.id WHERE products.id = ${req.params.product_id} GROUP BY products.id`,
+  //   (err, result) => {
+  //     res.json(result);
+  //     console.log(err);
+  //   }
+  // );
+});
 
 module.exports = router;

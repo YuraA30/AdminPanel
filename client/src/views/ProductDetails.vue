@@ -3,13 +3,14 @@
     <div class="container">
       <div class="row">
         <div class="col col-lg-8 col-12">
-          <h4 class="my-4">{{ product.name }}</h4>
+          <h4 class="mt-3 mb-5">{{ product.name }}</h4>
           <!-- <h5 class="text-left">{{ product.brand }}</h5> -->
           <img :src="product.img" class="image img-prod" />
         </div>
         <div class="col col-lg-4 col-12 mt-5">
-          <h3 class="mt-5 ml-2">{{ product.price }} грн</h3>
-          <router-link to="/cart" class="button">
+          <h6 class="mt-5 ml-1" v-html="message"> </h6>
+          <h3 class="mt-1 ml-2">{{ product.price }} грн</h3>
+          <button @click="addToCart()" class="button" :disabled="disabled">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"
@@ -23,7 +24,7 @@
               />
             </svg>
             Купити
-          </router-link>
+          </button>
           <p>
             {{ product.description }}
           </p>
@@ -50,6 +51,8 @@ export default {
   data() {
     return {
       product: [],
+      message: '<span style="color: green">В наявності<span>',
+      disabled: false
     };
   },
   async created() {
@@ -58,9 +61,33 @@ export default {
         "/api/products/" + this.$route.params.product_id
       );
       this.product = res.data;
+      console.log(this.product.count)
+      if (this.product.count == 0)
+      {
+        this.message = '<span style="color: red">Немає в наявності<span>'
+        this.disabled = true
+      }
+      else if (this.product.count < 10)
+      {
+        this.message = '<span style="color: rgb(226, 155, 0)">Залишилось мало<span>'
+      }
     } catch (e) {
       console.error(e);
     }
+  },
+  methods: {
+    addToCart() {
+      axios.post(
+        "/api/orders/" + this.$route.params.product_id,
+        {},
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+      this.$router.push({ name: "Cart" });
+    },
   },
 };
 </script>
@@ -75,6 +102,12 @@ export default {
   max-height: 60vh;
 }
 
+.button:disabled {
+  background-color: rgb(207, 207, 207);
+  color: rgb(136, 136, 136);
+  pointer-events: none;
+}
+
 .button {
   margin: 0;
   margin-top: 10px;
@@ -83,7 +116,8 @@ export default {
 }
 
 h3,
-h4 {
+h4, 
+h6 {
   text-align: left;
 }
 

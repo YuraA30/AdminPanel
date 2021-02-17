@@ -1,25 +1,29 @@
 <template>
-  <div>
+  <div style="padding-bottom: 100px; margin-top: -40px">
     <div class="main-page">
       <img src="@/assets/background.png" class="image back" alt="background" />
 
       <div class="main-container">
-        <router-link to="/catalog" class="button">Каталог</router-link>
+        <router-link to="/categories" class="button">Каталог</router-link>
       </div>
     </div>
     <div class="category-1">
       <h4 class="title"><b>Електроніка</b></h4>
       <b-container>
         <b-row class="mt-4">
-          <column class="col-4 product my-auto">
+          <column class="col-md-3 col-6 product my-auto">
             <img src="@/assets/hp.png" class="image img-prod" />
             <p>hp elitebook 840 g1</p>
           </column>
-          <column class="col-4 product my-auto">
+          <column class="col-md-3 col-6 product my-auto">
             <img src="@/assets/hp.png" class="image img-prod" />
             <p>hp elitebook 840 g1</p>
           </column>
-          <column class="col-4 product my-auto">
+          <column class="col-md-3 col-6 product my-auto">
+            <img src="@/assets/hp.png" class="image img-prod" />
+            <p>hp elitebook 840 g1</p>
+          </column>
+          <column class="col-md-3 col-6 product my-auto">
             <img src="@/assets/hp.png" class="image img-prod" />
             <p>hp elitebook 840 g1</p>
           </column>
@@ -30,15 +34,19 @@
       <h4 class="title"><b>Одяг</b></h4>
       <b-container>
         <b-row class="mt-4">
-          <column class="col-4 product my-auto">
+          <column class="col-md-3 col-6 product my-auto">
             <img src="@/assets/clothes-1.jpg" class="image img-prod" />
             <p>hp elitebook 840 g1</p>
           </column>
-          <column class="col-4 product my-auto">
+          <column class="col-md-3 col-6 product my-auto">
             <img src="@/assets/clothes-1.jpg" class="image img-prod" />
             <p>hp elitebook 840 g1</p>
           </column>
-          <column class="col-4 product my-auto">
+          <column class="col-md-3 col-6 product my-auto">
+            <img src="@/assets/clothes-1.jpg" class="image img-prod" />
+            <p>hp elitebook 840 g1</p>
+          </column>
+          <column class="col-md-3 col-6 product my-auto">
             <img src="@/assets/clothes-1.jpg" class="image img-prod" />
             <p>hp elitebook 840 g1</p>
           </column>
@@ -49,15 +57,19 @@
       <h4 class="title"><b>Електроніка</b></h4>
       <b-container>
         <b-row class="mt-4">
-          <column class="col-4 product my-auto">
+          <column class="col-md-3 col-6 product my-auto">
             <img src="@/assets/hp.png" class="image img-prod" />
             <p>hp elitebook 840 g1</p>
           </column>
-          <column class="col-4 product my-auto">
+          <column class="col-md-3 col-6 product my-auto">
             <img src="@/assets/hp.png" class="image img-prod" />
             <p>hp elitebook 840 g1</p>
           </column>
-          <column class="col-4 product my-auto">
+          <column class="col-md-3 col-6 product my-auto">
+            <img src="@/assets/hp.png" class="image img-prod" />
+            <p>hp elitebook 840 g1</p>
+          </column>
+          <column class="col-md-3 col-6 product my-auto">
             <img src="@/assets/hp.png" class="image img-prod" />
             <p>hp elitebook 840 g1</p>
           </column>
@@ -69,7 +81,6 @@
 
 <style>
 body {
-  background: #fffdfd;
   min-height: 100vh;
 }
 
@@ -142,7 +153,7 @@ b-row {
 .category-2 {
   margin: auto;
   margin-top: 20px;
-  width: 80%;
+  width: 100%;
   position: relative;
 }
 
