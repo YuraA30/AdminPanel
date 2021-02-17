@@ -3,7 +3,15 @@
     <br />
     <div class="form-group">
       <div class="d-flex justify-content-end">
-        <a :href="'/admin/specstable/:product_id/addspec'" class="btn btn-info">
+        <input
+          type="form-control"
+          v-model="search"
+          placeholder="Пошук"
+          height="35"
+          width="200"
+          autofocus
+        />
+        <a :href="'/admin/specs/add/'+  $route.params.product_id" class="btn btn-info">
           Додати характеристику
           <i class="far fa-trash-alt"></i>
         </a>
@@ -15,21 +23,42 @@
       <thead>
         <th scope="col">id</th>
         <th scope="col">Назва</th>
-        <th scope="col"></th>
+        <th scope="col">Значення</th>
+        <th scope="col">Видалення</th>
+        <th scope="col">Редагування</th>
       </thead>
       <tbody>
         <tr v-for="spec in specs" :key="spec.id">
+          
+          <td>
+            {{ spec.id}}
+          </td>
+
           <td>
             {{ spec.name }}
           </td>
 
           <td>
+            {{ spec.value }}
+          </td>
+
+          <td>
             <a
-              :href="'/api/admin/delete/' + spec.id"
+              :href="'/api/admin/specs/delete/' + spec.id"
               onclick="return confirm('Ви дійсно хочете видалити дану характеристику?');"
               class="btn btn-danger"
             >
               Видалити
+              <i class="far fa-trash-alt"></i>
+            </a>
+          </td>
+
+          <td>
+            <a
+              :href="'/admin/specs/edit/' + spec.id"
+              class="btn btn-info"
+            >
+            Змінити
               <i class="far fa-trash-alt"></i>
             </a>
           </td>
@@ -55,17 +84,29 @@ export default {
     };
   },
 
+  
+
   async created() {
     try {
       const res = await axios.get(
-        "/api/admin/categories/" + this.$route.params.cat
+        "/api/admin/specs/" + this.$route.params.product_id
       );
-      this.products = res.data;
+      this.specs = res.data;
     } catch (e) {
       console.error(e);
     }
   },
-};
+
+computed: {
+    filterList() {
+      return this.specs.filter((post) => {
+        return (
+          post.name.toLowerCase().includes(this.search.toLowerCase()) ||
+          post.value.toLowerCase().includes(this.search.toLowerCase()) 
+        );
+      });
+    },
+  },
 </script>
 
 <style>

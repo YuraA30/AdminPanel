@@ -27,6 +27,7 @@ app.use("/api/admin/delete", require("./routes/products"));
 app.use("/api/admin/edit", require("./routes/edit"));
 app.use("/api/admin/addcategory", require("./routes/addcategory"));
 app.use("/api/admin/addsubcategory", require("./routes/addsubcategory"));
+app.use("/api/admin/specs", require("./routes/adminspecs"));
 
 // SPA
 app.get("*", (req, res) => {

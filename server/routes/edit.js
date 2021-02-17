@@ -25,31 +25,7 @@ router.post("/:product_id", async (req, res) => {
 
   db.query(`UPDATE products set ? where id = ${req.params.product_id}`, product, (err, result) => {
     if (err) throw err;
-    // res.redirect(req.header('Referer'))
-    db.query(
-      `SELECT * FROM specs WHERE subcategory_id = ${req.params.product_id} GROUP BY name`,
-      (err, result) => {
-        if (err) {
-          console.log(err);
-        }
-        console.log(req.body);
-        var i = 0;
-        result.forEach((element) => {
-          let specs = {
-            subcategory_id: req.params.cat,
-            product_id: insertId,
-            name: element.name,
-            value: req.body['spec_' + element.id],
-          };
-          let sql = `UPDATE specs set ? where product_id = ${req.params.product_id}`;
-          db.query(sql, specs, (err, result) => {
-            if (err) throw err;
-            console.log(i);
-            i++;
-          });
-        });
-      }
-    );
+    res.redirect(req.header('Referer'))
   });
 });
 

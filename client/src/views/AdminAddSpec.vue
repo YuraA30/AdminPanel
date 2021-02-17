@@ -5,7 +5,7 @@
         <h2 class="reg-title">Додати характеристику</h2>
         <form
           method="POST"
-          action="/api/registration"
+          :action="'/api/admin/specs/add/' + $route.params.product_id" 
           novalidate
           style="height: "
         >
@@ -29,7 +29,25 @@
             <div class="invalid-feedback" v-if="!$v.formReg.name.required">
               {{ reqText }}
             </div>
+
+
+          <label for="name">Значення</label>
+            <input
+              @blur="$v.formReg.value.$touch()"
+              :class="status($v.formReg.value)"
+              v-model.trim="formReg.value"
+              type="text"
+              class="form-control"
+              id="value"
+              name="value"
+            />           
+
+            <div class="invalid-feedback" v-if="!$v.formReg.value.required">
+              {{ reqText }}
+            </div>
           </div>
+
+
 
           <button
             type="button"
@@ -57,6 +75,7 @@ export default {
       reqText: "Поле обовязкове для заповнення",
       formReg: {
         name: "",
+        value: "",
       },
     };
   },
@@ -65,8 +84,7 @@ export default {
     disabledBtn() {
       return (
         this.$v.formReg.name.$invalid ||
-        this.$v.formReg.surname.$invalid ||
-        this.$v.formReg.email.$invalid
+        this.$v.formReg.value.$invalid
       );
     },
   },
@@ -93,6 +111,9 @@ export default {
   validations: {
     formReg: {
       name: {
+        required,
+      },
+      value:{
         required,
       },
     },

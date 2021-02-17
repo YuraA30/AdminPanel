@@ -135,7 +135,7 @@ const routes = [
     component: AdminEditItem,
   },
   {
-    path:"/admin/specstable/:product_id/addspec",
+    path:"/admin/specs/add/:product_id",
     name: "Adminaddspecs",
     component: () => {return import ("../views/AdminAddSpec")}
   },
@@ -147,7 +147,7 @@ const routes = [
   },
   },
   {
-    path: "/admin/specstable/:product_id",
+    path: "/admin/specs/:product_id",
     name: "AdminSpecsTable",
     component:() => {
       return import("../views/AdminSpecsTable");

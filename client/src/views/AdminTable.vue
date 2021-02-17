@@ -79,7 +79,7 @@
           </td>
 
           <td>
-            <a :href="'/admin/specstable/' + product.id" class="btn btn-light">
+            <a :href="'/admin/specs/' + product.id" class="btn btn-light">
               Характеристики
               <i class="far fa-properties"></i>
             </a>
