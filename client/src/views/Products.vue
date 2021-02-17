@@ -1,10 +1,18 @@
 <template>
   <div class="products-page">
     <b-container>
-      <b-row>
+      <div v-if="displayProducts == 1"></div>
+      <div class="text-center empty" v-if="displayProducts == 2">
+        <h2>В цій категорії товарів немає</h2>
+        <img class="mt-2 empty-category mr-4" src="@/assets/empty-cart.svg" />
+        <button @click="$router.go(-1)" class="mt-3 button start">
+          Повернутися назад
+        </button>
+      </div>
+      <b-row v-if="displayProducts == 3">
         <b-column class="col-md-3 col-sm-12"> </b-column>
         <b-column class="col-md-9 col-sm-12 products">
-          <h3 class="text-center mt-4">Товари</h3>
+          <h3 class="text-center mb-3">Товари</h3>
           <button @click="showOthers()" class="filters-button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -25,12 +33,39 @@
       </b-row>
       <b-row>
         <b-column v-if="display" class="col-md-3 col-sm-12 mt-2 filters">
-          <FilterName />
-          <FilterValue />
+          <div v-for="spec of specs" :key="spec.name">
+            <h6>{{ spec.name }}</h6>
+
+            <div v-for="value of spec.value" :key="value">
+              <label>
+                <input
+                  type="checkbox"
+                  @change="newFilter(spec.name, value, $event)"
+                />
+                {{ value }}
+              </label>
+            </div>
+          </div>
         </b-column>
 
         <b-column class="col-md-9 col-sm-12 products">
-          <Product v-bind:subcategory_id="$route.params.subcategory_id" />
+          <div>
+            <b-row class="row-products">
+              <column
+                class="col-lg-3 col-md-4 col-sm-6 col-6 product"
+                v-for="product of products"
+                :key="product.id"
+              >
+                <router-link class="text-dark" :to="'/products/' + product.id">
+                  <img :src="product.img" class="image img-prod" />
+                  <p class="mt-2">
+                    <b>{{ product.name }}</b>
+                  </p>
+                  <p class="mt-1">{{ product.price }} грн</p>
+                </router-link>
+              </column>
+            </b-row>
+          </div>
         </b-column>
       </b-row>
     </b-container>
@@ -38,16 +73,8 @@
 </template>
 
 <script>
-import FilterValue from "@/components/FilterValue.vue";
-import FilterName from "@/components/FilterName.vue";
-import Product from "@/components/Product.vue";
-
+import axios from "axios";
 export default {
-  components: {
-    FilterName,
-    FilterValue,
-    Product,
-  },
   data() {
     var w = window.innerWidth;
     var check = false;
@@ -56,10 +83,34 @@ export default {
     }
     return {
       display: check,
+      specs: [],
+      checked: [],
+      products: [],
+      displayProducts: 1,
     };
   },
-  created() {
+  async created() {
     window.addEventListener("resize", this.myEventHandler);
+    const res = await axios.get(
+      "/api/specs/" + this.$route.params.subcategory_id
+    );
+    this.specs = res.data;
+    try {
+      const res = await axios.get(
+        "/api/categories/" +
+          this.$route.params.category_id +
+          "/" +
+          this.$route.params.subcategory_id
+      );
+      this.products = res.data;
+      if (this.products.length != 0) {
+        this.displayProducts = 3;
+      } else {
+        this.displayProducts = 2;
+      }
+    } catch (e) {
+      console.error(e);
+    }
   },
   destroyed() {
     window.removeEventListener("resize", this.myEventHandler);
@@ -78,6 +129,26 @@ export default {
         }
       }
     },
+    sortFunction(a, b) {
+      if (a[0] === b[0]) {
+        return 0;
+      } else {
+        return a[0] < b[0] ? -1 : 1;
+      }
+    },
+    newFilter(name, value, event) {
+      if (event.target.checked) {
+        this.checked.push([name, value]);
+      } else {
+        for (let i = 0; i < this.checked.length; i++) {
+          if (this.checked[i][0] == name && this.checked[i][1] == value) {
+            this.checked.splice(i, 1);
+          }
+        }
+      }
+      this.checked.sort(this.sortFunction);
+      console.log(this.checked);
+    },
   },
 };
 </script>
@@ -86,14 +157,53 @@ export default {
 .products-page {
   min-height: 100vh;
 }
+
 .filters {
   display: inline-block;
   text-align: start;
 }
 
+input[type="checkbox"] {
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+p {
+  font-size: medium;
+  margin: 0;
+}
+
+label {
+  cursor: pointer;
+}
+
 .products {
   margin: 0 auto;
   width: 80%;
+}
+
+.row-products {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.empty {
+  margin-top: 20vh;
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 280px;
+}
+
+.start {
+  margin: auto;
+}
+.empty-category {
+  max-height: 20vh;
 }
 
 .filters-button {
@@ -118,6 +228,15 @@ export default {
 @media (max-width: 767px) {
   .filters {
     margin-left: 30px;
+  }
+
+  .product {
+    padding: 0;
+  }
+
+  .row-products {
+    margin-left: -30px;
+    margin-right: -30px;
   }
 }
 </style>

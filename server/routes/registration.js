@@ -16,57 +16,61 @@ let transporter = nodemailer.createTransport({
 });
 
 router.post("/", async (req, res) => {
-  db.query(
-    `SELECT * FROM users WHERE email like '${req.body.email}' LIMIT 1`,
+  await db.query(
+    `SELECT * FROM users WHERE email like "${req.body.email}" LIMIT 1`,
     async (err, results) => {
       let json = JSON.parse(JSON.stringify(results));
       console.log(json);
       if (json.length > 0) {
-        return res.json({ message: "User already exists" });
+        res.json({ message: "User already exists" });
+      } else {
+        json = JSON.parse(JSON.stringify(req.body));
+        var hashpass = await bcrypt.hash(json.password, 10);
+        jwt.sign(
+          {
+            email: json.email,
+          },
+          process.env.SECRET,
+          {
+            expiresIn: "1d",
+          },
+          (err, emailToken) => {
+            const url = `http://localhost:5000/api/registration/${emailToken}`;
+            if (err) {
+              console.log(err);
+            } else {
+              transporter.sendMail({
+                to: json.email,
+                subject: "Підтвердження електронної пошти",
+                html: `Доброго дня,${json.name} ${json.surname}. Для підтвердження аккаунту <a href="${url}">натисніть на цей текст</a>`,
+              });
+              let user = {
+                name: json.name,
+                surname: json.surname,
+                email: json.email,
+                phone: json.phone,
+                password: hashpass,
+                token: emailToken,
+              };
+              db.query("INSERT INTO users set ?", user, (err, result) => {
+                if (err) throw err;
+              });
+              res.json({
+                message: "Лист з підсвердженням на пошті",
+                email: json.email,
+              });
+            }
+          }
+        );
       }
     }
   );
-  json = JSON.parse(JSON.stringify(req.body));
-  var hashpass = await bcrypt.hash(json.password, 10);
-  let user = {
-    name: json.name,
-    surname: json.surname,
-    email: json.email,
-    phone: json.phone,
-    password: hashpass,
-  };
-  let sql = "INSERT INTO users set ?";
-  db.query(sql, user, (err, result) => {
-    if (err) throw err;
-  });
-
-  await jwt.sign(
-    {
-      email: json.email,
-    },
-    process.env.SECRET,
-    {
-      expiresIn: "1d",
-    },
-    (err, emailToken) => {
-      const url = `http://localhost:5000/api/registration/${emailToken}`;
-      if (err) throw err;
-      console.log(json.email);
-      transporter.sendMail({
-        to: json.email,
-        subject: "Підтвердження електронної пошти",
-        html: `Доброго дня,${json.name} ${json.surname},для підтвердження аккаунту <a href="${url}">натисніть на цей текст</a>`,
-      });
-    }
-  );
-  res.json({ message: "Лист з підсвердженням на пошті", email: json.email });
 });
 
 router.get("/:token", (req, res) => {
   try {
     const email = jwt.verify(req.params.token, process.env.SECRET);
-    console.log("email:", email);
-    let sql = `UPDATE users SET verified = TRUE WHERE email = '${email.email}'`;
+    let sql = `UPDATE users SET verified = TRUE WHERE email = "${email.email}"`;
     db.query(sql, (err, result) => {
       res.send("Ти зарегався кста");
     });
