@@ -135,11 +135,16 @@ const routes = [
     component: AdminEditItem,
   },
   {
+    path:"/admin/addspecs/:cat",
+    name: "Adminaddspecs",
+    component: () => {return import ("../views/AdminAddSpec")}
+  },
+  {
     path: "/admin/soldItems",
     name: "Adminsolditems",
     component: () => {
       return import("../views/AdminSoldItems.vue");
-    },
+  },
   },
 ];
 

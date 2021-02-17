@@ -35,6 +35,15 @@
                 </h5>
               </router-link>
             </div>
+
+            <div class="d-flex justify-content-end">
+              <a :href="'/admin/addspecs/' + j.id">
+                <button type="button" class="btn btn-light">
+                  Додати характеристику
+                  <!-- <i class="far fa-plus-circle"></i> -->
+                </button>
+              </a>
+            </div>
           </div>
         </div>
       </div>
