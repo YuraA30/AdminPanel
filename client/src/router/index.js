@@ -135,7 +135,7 @@ const routes = [
     component: AdminEditItem,
   },
   {
-    path:"/admin/addspecs/:cat",
+    path:"/admin/specstable/:product_id/addspec",
     name: "Adminaddspecs",
     component: () => {return import ("../views/AdminAddSpec")}
   },
@@ -145,6 +145,18 @@ const routes = [
     component: () => {
       return import("../views/AdminSoldItems.vue");
   },
+  },
+  {
+    path: "/admin/specstable/:product_id",
+    name: "AdminSpecsTable",
+    component:() => {
+      return import("../views/AdminSpecsTable");
+    }
+  },
+  {
+    path:"/admin/specstable/:product_id/spec/:id",
+    name: "AdminDeleteSpec",
+    component: () => {return import ("../views/AdminSpecsTable")}
   },
 ];
 
