@@ -3,14 +3,22 @@ const router = Router();
 const db = require("../config/db");
 
 router.get("/:product_id", (req, res) => {
-  db.query(
-    `SELECT *,specs.name AS specs,specs.id AS specs_id FROM specs INNER JOIN products WHERE product_id = ${req.params.product_id} GROUP BY specs.name`,
-    (err, result) => {
-      if(err) console.log(err)
-      res.json(result);
-    console.log(result)
-    }
-  );
+  arr = {};
+    db.query(
+      `SELECT * FROM products WHERE id = ${req.params.product_id}`,
+      (err, result) => {
+        arr = result[0];
+
+        db.query(
+          `SELECT * FROM specs WHERE product_id = ${result[0].id}`,
+          (err, result) => {
+            arr.specs = result;
+
+            res.json(arr);
+          }
+        );
+      }
+    );
 })
 
 router.post("/:product_id", async (req, res) => {
