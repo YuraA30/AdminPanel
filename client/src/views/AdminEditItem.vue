@@ -1,12 +1,17 @@
-  
 <template>
   <div class="container mt-4">
     <div class="col-sm-4 mx-auto">
-      <h2 class="reg-title">Редагувати товар товар</h2>
-      <form method="POST" action="/api/admin/additem" novalidate>
+      <h2 class="reg-title">Редагувати товар</h2>
+      <form
+        method="POST"
+        :action="'/api/admin/categories/additem/' + $route.params.cat"
+        novalidate
+      >
         <div v-if="regMessage" class="alert alert-success" role="alert">
           Ви успішно додали товар!
         </div>
+        <div>
+        <h2>{{ product.name }}</h2>
 
         <div class="form-group">
           <label for="image">Фотографія</label>
@@ -20,6 +25,7 @@
             id="image"
             name="image"
             @change="GetImage"
+            :value="product.img"
           />
 
           <div class="invalid-feedback" v-if="!$v.formReg.image.required">
@@ -154,7 +160,7 @@
 
 <script>
 import { required, helpers, url } from "vuelidate/lib/validators";
-
+import axios from "axios";
 const alpha = helpers.regex("alpha", /^[0-9]*$/);
 
 export default {
@@ -170,7 +176,17 @@ export default {
         image: "",
       },
       avatar: null,
+      product: [],
     };
+  },
+
+  async created() {
+    try {
+      const res = await axios.get("/api/admin/edit/" + this.$route.params.cat);
+      this.product = res.data;
+    } catch (e) {
+      console.error(e);
+    }
   },
 
   computed: {
