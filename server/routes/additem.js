@@ -43,7 +43,7 @@ router.post("/:cat", async (req, res) => {
             subcategory_id: req.params.cat,
             product_id: insertId,
             name: element.name,
-            value: req.body['spec_' + element.id],
+            value: "4gb",
           };
           let sql = "INSERT INTO specs set ?";
           db.query(sql, specs, (err, result) => {

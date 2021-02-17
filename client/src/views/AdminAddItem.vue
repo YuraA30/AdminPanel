@@ -191,7 +191,7 @@ export default {
       const res = await axios.get(
         "/api/admin/additem/" + this.$route.params.cat
       );
-      this.spesc = res.data;
+      this.specs = res.data;
     } catch (e) {
       console.error(e);
     }
