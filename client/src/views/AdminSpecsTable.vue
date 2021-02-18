@@ -28,7 +28,6 @@
         <th scope="col">Назва</th>
         <th scope="col">Значення</th>
         <th scope="col">Видалення</th>
-        <th scope="col">Редагування</th>
       </thead>
       <tbody>
         <tr v-for="spec in filterList" :key="spec.id">
@@ -51,13 +50,6 @@
               class="btn btn-danger"
             >
               Видалити
-              <i class="far fa-trash-alt"></i>
-            </a>
-          </td>
-
-          <td>
-            <a :href="'/admin/specs/edit/' + spec.id" class="btn btn-info">
-              Змінити
               <i class="far fa-trash-alt"></i>
             </a>
           </td>

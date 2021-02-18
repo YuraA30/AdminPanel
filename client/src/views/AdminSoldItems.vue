@@ -16,7 +16,7 @@
       <tbody>
         <tr v-for="(product, k) in filterByTerm" :key="k">
           <td class="form-control">
-            {{ product.username }}
+            {{ product.email }}
           </td>
 
           <td>
@@ -29,36 +29,16 @@
           </td>
 
           <td>
-            <div v-if="product.status === 'Замовлений'">
+            <div v-if="product.status == 1">
               <select class="form-control" aria-label="Default select example">
-                <option selected>{{ product.status }}</option>
-                <option value="1">В очікуванні</option>
-                <option value="3">Завершений</option>
-                <option value="4">Закритий</option>
+                <option selected>Замовлений</option>
+                <option value="2">Завершений</option>
               </select>
             </div>
-            <div v-else-if="product.status === 'В очікуванні'">
+            <div v-else-if="product.status == 2">
               <select class="form-control" aria-label="Default select example">
-                <option selected>{{ product.status }}</option>
+                <option selected>Завершений</option>
                 <option value="1">Замовлений</option>
-                <option value="3">Завершений</option>
-                <option value="4">Закритий</option>
-              </select>
-            </div>
-            <div v-else-if="product.status === 'Завершений'">
-              <select class="form-control" aria-label="Default select example">
-                <option selected>{{ product.status }}</option>
-                <option value="1">В очікуванні</option>
-                <option value="3">Замовлений</option>
-                <option value="4">Закритий</option>
-              </select>
-            </div>
-            <div v-else-if="product.status === 'Закритий'">
-              <select class="form-control" aria-label="Default select example">
-                <option selected>{{ product.status }}</option>
-                <option value="1">В очікуванні</option>
-                <option value="3">Завершений</option>
-                <option value="4">Замовлений</option>
               </select>
             </div>
           </td>
@@ -89,52 +69,32 @@
 </template>
 
 <script>
+  import axios from "axios";
 export default {
   data() {
     return {
-      products: [
-        {
-          name: "Пральна машина",
-          status: "Замовлений",
-          username: "Fobos",
-          price: 15,
-          count: 10,
-          total: 0,
-        },
-        {
-          name: "Холодильник",
-          status: "Замовлений",
-          username: "Grant",
-          price: 13,
-          count: 2,
-          total: 0,
-        },
-        {
-          name: "Тостер",
-          status: "Завершений",
-          username: "Brant",
-          price: 54,
-          count: 43,
-          total: 0,
-        },
-        {
-          name: "Планшет",
-          status: "Закритий",
-          username: "Mrant",
-          price: 10,
-          count: 12,
-          total: 0,
-        },
-      ],
+      products: [],
       search: "",
     };
   },
+
+  async created() {
+    try {
+      const res = await axios.get(
+        "/api/admin/solditems"
+      );
+      this.products = res.data;
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
   computed: {
     filterByTerm() {
       return this.products.filter((product) => {
         return (
+          product.email.toLowerCase().includes(this.search.toLowerCase()) ||
           product.name.toLowerCase().includes(this.search.toLowerCase()) ||
-          product.username.toLowerCase().includes(this.search.toLowerCase()) ||
           product.price.toLowerCase().includes(this.search.toLowerCase()) ||
           product.count.toLowerCase().includes(this.search.toLowerCase()) ||
           product.total.toLowerCase().includes(this.search.toLowerCase()) ||

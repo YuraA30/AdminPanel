@@ -5,9 +5,11 @@ const db = require("../config/db");
 // Get cart for current user
 router.get("/", (req, res) => {
   db.query(
-    `SELECT * FROM products
-    INNER JOIN orders ON products.id = orders.product_id`,
+    `SELECT orders.*,products.name,products.price, users.email FROM orders 
+    INNER JOIN products ON products.id = orders.product_id 
+    inner join users ON users.id = orders.user_id where status>0`,
     (err, result) => {
+      console.log(err)
       res.json(result);
       // console.log(req.user_id);
     }

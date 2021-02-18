@@ -5,6 +5,7 @@ import Catalog from "../views/Catalog.vue";
 import Contacts from "../views/Contacts.vue";
 import Products from "../views/Products.vue";
 import UserOrders from "../views/UserOrders.vue";
+import Success from "../views/Success.vue";
 import LoginForm from "../views/LoginForm";
 import Registration from "../views/RegistrationForm";
 import ProductDetails from "../views/ProductDetails.vue";
@@ -60,6 +61,11 @@ const routes = [
     component: UserOrders,
   },
   {
+    path: "/success",
+    name: "Success",
+    component: Success,
+  },
+  {
     path: "/login",
     name: "Login",
     component: LoginForm,
@@ -87,16 +93,12 @@ const routes = [
   {
     path: "/admin",
     name: "adminmain",
-    component: () => {
-      return import("../views/AdminMain.vue");
-    },
+    component: require("../views/AdminMain.vue").default,
   },
   {
     path: "/admin/categories",
     name: "Admincategory",
-    component: () => {
-      return import("../views/AdminCategory.vue");
-    },
+    component: require("../views/AdminCategory.vue").default,
   },
   {
     path: "/admin/categories/:cat",
@@ -106,23 +108,17 @@ const routes = [
   {
     path: "/admin/additem/:cat",
     name: "Adminadditem",
-    component: () => {
-      return import("../views/AdminAddItem.vue");
-    },
+    component: require("../views/AdminAddItem.vue").default,
   },
   {
     path: "/admin/addcategory",
     name: "Adminaddcategory",
-    component: () => {
-      return import("../views/AdminAddCategory.vue");
-    },
+    component: require("../views/AdminAddCategory.vue").default,
   },
   {
     path: "/admin/addsubcategory/:cat",
     name: "Adminaddsubcategory",
-    component: () => {
-      return import("../views/AdminAddSubCategory.vue");
-    },
+    component: require("../views/AdminAddSubCategory.vue").default,
   },
   {
     path: "/admin/delete/:product_id",
@@ -134,29 +130,25 @@ const routes = [
     name: "AdminEditProd",
     component: AdminEditItem,
   },
-  {
+{
     path:"/admin/specs/add/:product_id",
     name: "Adminaddspecs",
-    component: () => {return import ("../views/AdminAddSpec")}
+    component: require("../views/AdminAddSpec.vue").default,
   },
   {
     path: "/admin/soldItems",
     name: "Adminsolditems",
-    component: () => {
-      return import("../views/AdminSoldItems.vue");
-  },
+    component: require("../views/AdminSoldItems.vue").default,
   },
   {
     path: "/admin/specs/:product_id",
     name: "AdminSpecsTable",
-    component:() => {
-      return import("../views/AdminSpecsTable");
-    }
+    component: require("../views/AdminSpecsTable").default,
   },
   {
-    path:"/admin/specstable/:product_id/spec/:id",
+    path:"/admin/specs/delete/:product_id",
     name: "AdminDeleteSpec",
-    component: () => {return import ("../views/AdminSpecsTable")}
+    component: require("../views/AdminSpecsTable").default
   },
 ];
 

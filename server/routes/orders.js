@@ -1,16 +1,16 @@
 const { Router } = require("express");
 const router = Router();
 const db = require("../config/db");
+const moment = require("moment");
 
-// Get cart for current user
-router.get("/", (req, res) => {
+// Get cart or purchased products for current user
+router.get("/:status", (req, res) => {
   db.query(
-    `SELECT products.*, orders.id, orders.product_id, orders.count FROM products
+    `SELECT products.*, orders.*, COUNT(*) AS count FROM products
     INNER JOIN orders ON products.id = orders.product_id
-    INNER JOIN users ON users.id = orders.user_id WHERE users.id = "${req.user_id}"`,
+    INNER JOIN users ON users.id = orders.user_id WHERE users.id = "${req.user_id}" AND status = "${req.params.status}" GROUP BY user_id, product_id`,
     (err, result) => {
       res.json(result);
-      // console.log(req.user_id);
     }
   );
 
@@ -23,6 +23,27 @@ router.get("/", (req, res) => {
   //     console.log(err);
   //   }
   // );
+});
+
+// Purchase products for current user
+router.post("/", (req, res) => {
+  const order = {
+    status: 1,
+    date: moment().format("DD.MM.YYYY"),
+    payment_method: req.body.payment_method,
+    delivery_method: req.body.delivery_method,
+    region: req.body.region,
+    city: req.body.city,
+    delivery_address: req.body.delivery_address,
+  };
+
+  db.query(
+    `UPDATE orders SET ? WHERE user_id = ${req.user_id} AND status = 0`,
+    order,
+    (err, result) => {
+      res.send("OK");
+    }
+  );
 });
 
 // Add to cart for current user

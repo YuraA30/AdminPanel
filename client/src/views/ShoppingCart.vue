@@ -33,7 +33,7 @@
                   </div>
                   <div class="col my-auto col-lg-3 col-7">
                     <p class="parameter">Кількість</p>
-                    <b-input
+                    <b-input @change="changeCount($event, item.id)"
                       class="count"
                       type="number"
                       :value="item.count"
@@ -42,7 +42,7 @@
                   </div>
                   <div class="col my-auto col-lg-2 col-5">
                     <p class="parameter">Ціна</p>
-                    <p class="price">{{ item.price }}</p>
+                    <p class="price">{{ item.price }} грн</p>
                   </div>
                 </div>
               </div>
@@ -79,7 +79,7 @@
         </div>
         <div class="col col-lg-5 col-12">
           <h3 class="my-4">Оформлення</h3>
-          <form class="ordering">
+          <form class="ordering" @submit.prevent="addOrder()">
             <div class="row">
               <div class="col-12" v-for="user of userInfo" :key="user.id">
                 <p class="section my-2">Користувач</p>
@@ -93,11 +93,15 @@
             <div class="row">
               <div class="col-12">
                 <p class="section my-2">Оплата</p>
-                <b-form-select name="type" class="form-select-md">
-                  <b-form-select-option selected="selected"
+                <b-form-select
+                  name="type"
+                  class="form-select-md"
+                  v-model="key_payment"
+                >
+                  <b-form-select-option value="1"
                     >Картою онлайн</b-form-select-option
                   >
-                  <b-form-select-option
+                  <b-form-select-option value="2"
                     >При отриманні товару</b-form-select-option
                   >
                 </b-form-select>
@@ -145,7 +149,7 @@
             <div class="row">
               <div class="col-12">
                 <p class="section my-2">Населений пункт</p>
-                <b-form-select
+                <b-form-select required
                   name="type"
                   class="form-select-md"
                   @change="onchangeCity()"
@@ -153,7 +157,7 @@
                 >
                   <b-form-select-option
                     v-for="city of cities.data"
-                    :key="city.Description"
+                    :key="city.Ref"
                     :value="city.Ref"
                   >
                     {{ city.Description }}
@@ -164,7 +168,7 @@
             <div class="row" v-if="display_warehouse">
               <div class="col-12">
                 <p class="section my-2">Відділення</p>
-                <b-form-select
+                <b-form-select required
                   name="type"
                   class="form-select-md"
                   v-model="warehouse_ref"
@@ -183,7 +187,7 @@
             <div class="row" v-if="display_address">
               <div class="col-12">
                 <p class="section my-2">Вулиця, будинок, квартира</p>
-                <input class="form-control" />
+                <input class="form-control" required v-model="address" />
               </div>
             </div>
 
@@ -220,6 +224,7 @@ export default {
   data() {
     return {
       key_delivery: 1,
+      key_payment: 1,
       area_ref: "71508131-9b87-11de-822f-000c2965ae0e",
       city_ref: "33ab7ee7-9e33-11e9-898c-005056b24375",
       warehouse_ref: "6eebcc98-b1d4-11e9-8c22-005056b24375",
@@ -232,6 +237,12 @@ export default {
       display_address: false,
       displayCart: 1,
       userInfo: null,
+      area: null,
+      city: null,
+      warehouse: null,
+      address: null,
+      currentValue: 0,
+      countDict: {},
       apiKey: "1248264db38907916e355ff139ab2def",
       url: "https://api.novaposhta.ua/v2.0/json/",
     };
@@ -298,6 +309,82 @@ export default {
           console.log(this.cartItems);
         });
     },
+    async addOrder() {
+      await axios
+        .post(this.url, {
+          apiKey: this.apiKey,
+          modelName: "Address",
+          calledMethod: "getAreas",
+          methodProperties: {
+            Ref: this.area_ref,
+          },
+        })
+        .then((response) => {
+          this.area = response.data.data[0].Description;
+        });
+      await axios
+        .post(this.url, {
+          modelName: "Address",
+          calledMethod: "getCities",
+          methodProperties: {
+            Ref: this.city_ref,
+          },
+          apiKey: this.apiKey,
+        })
+        .then((response) => {
+          this.city = response.data.data[0].Description;
+        });
+      if (this.key_delivery == 1) {
+        this.address = null;
+        await axios
+          .post(this.url, {
+            modelName: "AddressGeneral",
+            calledMethod: "getWarehouses",
+            methodProperties: {
+              Ref: this.warehouse_ref,
+            },
+            apiKey: this.apiKey,
+          })
+          .then((response) => {
+            this.warehouse = response.data.data[0].Description;
+          });
+      }
+
+      await axios.post(
+        "/api/orders",
+        {
+          payment_method: this.key_payment,
+          delivery_method: this.key_delivery,
+          region: this.area,
+          city: this.city,
+          delivery_address: this.warehouse || this.address,
+        },
+        {
+          headers: {
+            token: localStorage.getItem("token"),
+          },
+        }
+      );
+
+      this.$router.push({ name: "Success" });
+    },
+    changeCount(event, id) {
+      this.countDict[id] = event;
+      this.fullPrice = 0
+      for (var i = 0; i < this.cartItems.length; i++) {
+        if (!(this.cartItems[i].id in this.countDict))
+        {
+          this.countDict[this.cartItems[i].id] = this.cartItems[i].count;
+        }
+        for(var key in this.countDict)
+        {
+          if (this.cartItems[i].id == key)
+          {
+            this.fullPrice += this.cartItems[i].price * this.countDict[key];
+          }
+        }
+      }
+    }
   },
   mounted() {
     if (localStorage.getItem("token") == null) {
@@ -340,7 +427,7 @@ export default {
         this.warehouses = response.data;
       });
     axios
-      .get("/api/orders", {
+      .get("/api/orders/0", {
         headers: {
           token: localStorage.getItem("token"),
         },
@@ -420,7 +507,7 @@ p {
 }
 .count {
   height: 20px;
-  width: 50px;
+  width: 60px;
   margin: auto;
 }
 p {

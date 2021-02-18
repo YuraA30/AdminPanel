@@ -3,18 +3,20 @@ const router = Router();
 const db = require("../config/db");
 
 router.get("/:product_id", (req, res) => {
-  arr = {};
-    db.query(
-      `SELECT * FROM products WHERE id = ${req.params.product_id}`,
-      (err, result) => {
-        res.json(result)
-      }
-    );
+  db.query(
+    `SELECT * FROM products WHERE id = ${req.params.product_id}`,
+    (err, result) => {
+      if(err) console.log(err)
+      res.json(result);
+    console.log(result)
+    }
+  );
 })
 
-router.post("/:product_id", async (req, res) => {
+router.post("/:product_id", (req, res) => {
   json = JSON.parse(JSON.stringify(req.body));
   let product = {
+    subcategory_id : req.params.cat,
     name: json.name,
     brand: json.brand,
     description: json.description,
@@ -22,8 +24,8 @@ router.post("/:product_id", async (req, res) => {
     price: json.price,
     count: json.count,
   };
-
-  db.query(`UPDATE products set ? where id = ${req.params.product_id}`, product, (err, result) => {
+  let sql = "Update user set ? where id = ${req.params.product_id}";
+  db.query(sql, product, (err, result) => {
     if (err) throw err;
     res.redirect(req.header('Referer'))
   });
